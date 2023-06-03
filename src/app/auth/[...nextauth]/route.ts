@@ -4,15 +4,7 @@ import { nanoid } from "nanoid";
 import { DateTime } from "luxon";
 import type { JWT } from "next-auth/jwt";
 
-const authorizationUrl = [
-    process.env.FIDOR_AUTHORIZATION_URL,
-    `?client_id=${process.env.FIDOR_CLIENT_ID}`,
-    `&redirect_uri=${process.env.FIDOR_CALLBACK_URL}`,
-    `&state=${nanoid()}`,
-    `&response_type=code`,
-].join("");
-
-const FidorUrls = {
+export const FidorUrls = {
     Base: "https://apm.tp.sandbox.fidorfzco.com",
     Authorization: "https://apm.tp.sandbox.fidorfzco.com/oauth/authorize",
     AccessToken: "https://apm.tp.sandbox.fidorfzco.com/oauth/token",
