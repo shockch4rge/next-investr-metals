@@ -17,9 +17,7 @@ import { useTradingPreferences } from "@/contexts/TradingPreferences";
 
 export const NavBar: React.FC = () => {
     const router = useRouter();
-    const { data: session, status } = useSession({
-        required: true,
-    });
+    const { data: session, status } = useSession();
 
     return <nav className="flex px-8 py-4 bg-white shadow-sm mb-5">
         <Container>
@@ -78,9 +76,9 @@ const MetalCategorySelect: React.FC = () => {
             setTimeout(() => setLoading(false), 1000);
         }}
     >
-        <SelectBoxItem value="gold" text="Gold"/>
-        <SelectBoxItem value="silver" text="Silver"/>
-        <SelectBoxItem value="platinum" text="Platinum" />
-        <SelectBoxItem value="palladium" text="Palladium"/>
+        <SelectBoxItem value="gold" text="Gold (XAU)"/>
+        <SelectBoxItem value="silver" text="Silver (XAG)"/>
+        <SelectBoxItem value="platinum" text="Platinum (XPL)" />
+        <SelectBoxItem value="palladium" text="Palladium (XPD)"/>
     </SelectBox>;
 };
