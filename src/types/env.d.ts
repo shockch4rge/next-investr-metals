@@ -4,5 +4,8 @@ declare namespace NodeJS {
         readonly FIDOR_CLIENT_SECRET: string;
         readonly FIDOR_CALLBACK_URL: string;
         readonly NEWSAPI_API_KEY: string;
+        readonly ALPHAVANTAGE_API_KEY: string;
+        readonly FIREBASE_API_KEY: string;
+        readonly NEXT_PUBLIC_METALPRICE_API_KEY: string;
     }
 }
