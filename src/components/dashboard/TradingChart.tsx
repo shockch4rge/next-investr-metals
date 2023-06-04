@@ -3,44 +3,13 @@
 import { MetalPriceResponseSchema, type MetalPriceResponse, MetalPrice } from "@/apis/metals";
 import type { CurrencyType, TradingTimeframe } from "@/contexts/TradingPreferences";
 import { useTradingPreferences } from "@/contexts/TradingPreferences";
-import { Card, AreaChart, TabList, Tab, Text, Metric, Subtitle, SelectBox, SelectBoxItem } from "@tremor/react";
+import { calculateTimeframe } from "@/util/currencies";
+import { Card, AreaChart, TabList, Tab, Text, Metric, Subtitle, SelectBox, SelectBoxItem, Col } from "@tremor/react";
 import { DateTime } from "luxon";
 import { useCallback, useEffect, useState } from "react";
 
 async function getMetalPrices({ timeframe, metal }: { metal: "XAG" | "XAU" | "XPD" | "XPT"; timeframe: TradingTimeframe }) {
-    let startDate = DateTime.now().minus({ days: 2 })
-        .toISODate();
-    const endDate = DateTime.now().minus({ days: 1 })
-        .toISODate();
-
-    if (timeframe === "1y") {
-        startDate = DateTime
-            .now()
-            .minus({ years: 1 })
-            .toISODate()!;
-    }
-
-    if (timeframe === "6m") {
-        startDate = DateTime
-            .now()
-            .minus({ months: 6 })
-            .toISODate()!;
-    }
-    
-    if (timeframe === "1m") {
-        startDate = DateTime
-            .now()
-            .minus({ months: 1 })
-            .toISODate()!;
-    }
-    
-    if (timeframe === "1w") {
-        startDate = DateTime
-            .now()
-            .minus({ weeks: 1 })
-            .toISODate();
-    }
-    
+    const [startDate, endDate] = calculateTimeframe(timeframe);
     const url = `https://api.metalpriceapi.com/v1/timeframe?start_date=${startDate}&end_date=${endDate}&base=${metal}&currencies=USD`;
     const res = await fetch(url, {
         headers: {
