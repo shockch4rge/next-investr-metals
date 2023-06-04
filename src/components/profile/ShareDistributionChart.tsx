@@ -22,6 +22,6 @@ export const ShareDistributionChart: React.FC<{ transaction: any }> = ({ transac
         index="ticker"
         category="price" 
         data={parseSubject(transaction.subject)}
-        valueFormatter={value => matchCurrencyType(value, "us")}
+        valueFormatter={value => matchCurrencyType(value, "USD")}
     />;
 };
