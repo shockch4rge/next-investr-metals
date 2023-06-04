@@ -33,7 +33,6 @@ export const NavBar: React.FC = () => {
                     <div className="flex items-center space-x-6">
                         <NavLink href={AppRoutes.Dashboard()}>Dashboard</NavLink>
                         <NavLink href={AppRoutes.News()}>News</NavLink>
-                        <NavLink href={AppRoutes.Explore()}>Explore</NavLink>
                     </div>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -76,9 +75,9 @@ const MetalCategorySelect: React.FC = () => {
             setTimeout(() => setLoading(false), 1000);
         }}
     >
-        <SelectBoxItem value="gold" text="Gold (XAU)"/>
-        <SelectBoxItem value="silver" text="Silver (XAG)"/>
-        <SelectBoxItem value="platinum" text="Platinum (XPL)" />
-        <SelectBoxItem value="palladium" text="Palladium (XPD)"/>
+        <SelectBoxItem value="XAU" text="Gold (XAU)"/>
+        <SelectBoxItem value="XAG" text="Silver (XAG)"/>
+        <SelectBoxItem value="XPT" text="Platinum (XPT)" />
+        <SelectBoxItem value="XPD" text="Palladium (XPD)"/>
     </SelectBox>;
 };
