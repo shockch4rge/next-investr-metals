@@ -22,7 +22,7 @@ export default async function DashboardPage() {
                     <div className="col-span-1 row-span-1">
                         <TradingBox />
                     </div>
-                    <div className="col-span-2 row-span-1">
+                    <div className="col-span-2 row-span-2">
                         <TradingChart />
                     </div>
                     <div className="col-span-1 row-span-2">
