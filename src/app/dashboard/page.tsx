@@ -1,6 +1,8 @@
 import { Container } from "@/components/Container";
+import { TradingAdvisor } from "@/components/dashboard/TradingAdvisor";
 import { TradingBox } from "@/components/dashboard/TradingBox";
 import { TradingChart } from "@/components/dashboard/TradingChart";
+import { ChangePercentageMetricCard } from "@/components/dashboard/TradingMetrics";
 import { Card, Col, Grid, Subtitle, Title } from "@tremor/react";
 
 export default async function DashboardPage() {   
@@ -8,25 +10,25 @@ export default async function DashboardPage() {
         <main>
             <Container>
                 <Title className="font-bold text-2xl">Dashboard</Title>
-                <Subtitle className="mt-1 mb-6">View live trading data on various precious metals.</Subtitle>
+                <Subtitle className="mt-1 mb-6">View and trade precious metals using live data.</Subtitle>
 
-                <Grid numColsLg={4} className="gap-6">
-                    <Col numColSpanLg={3}>
-                        <TradingChart />
-                    </Col>
-                    <Col numColSpanLg={1}>
+                <div className="grid grid-cols-3 grid-rows-4 grid-flow-row-dense gap-6">
+                    <div className="col-span-1 row-span-1">
+                        <ChangePercentageMetricCard />
+                    </div>
+                    <div className="col-span-1 row-span-1">
+                        <ChangePercentageMetricCard />
+                    </div>
+                    <div className="col-span-1 row-span-1">
                         <TradingBox />
-                    </Col>
-                </Grid>
-
-                <Grid numColsMd={2} className="mt-6 gap-6">
-                    <Card>
-                        <div className="h-28" />
-                    </Card>
-                    <Card>
-                        <div className="h-28" />
-                    </Card>
-                </Grid>
+                    </div>
+                    <div className="col-span-2 row-span-1">
+                        <TradingChart />
+                    </div>
+                    <div className="col-span-1 row-span-2">
+                        <TradingAdvisor />
+                    </div>
+                </div>
             </Container>
         </main>
     </>;
