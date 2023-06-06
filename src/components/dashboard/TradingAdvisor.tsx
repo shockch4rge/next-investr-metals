@@ -36,28 +36,27 @@ export const TradingAdvisor: React.FC = () => {
             <AccordionBody>
                 <Text>
                     Ask the chatbot for tips and information about trading precious metals.
-                    <br/>
-                    <div className="mt-4">
-                        <Bold>
-                            Example prompts:
-                        </Bold>
-                        <List>
-                            <ListItem >
-                                <div>
-                                    <Text>
-                                        How are precious metals like gold, platinum and silver doing?
-                                    </Text>
-                                </div>
-                            </ListItem>
-                            <ListItem>
-                                <Text>
-                                    What are the most common symbols for precious metals?
-                                </Text>
-                            </ListItem>
-                        </List>
-                    </div>
-                    
                 </Text>
+                <div className="mt-4">
+                    <Bold>
+                        Example prompts:
+                    </Bold>
+                    <List>
+                        <ListItem >
+                            <div>
+                                <Text>
+                                    How are precious metals like gold, platinum and silver doing?
+                                </Text>
+                            </div>
+                        </ListItem>
+                        <ListItem>
+                            <Text>
+                                What are the most common symbols for precious metals?
+                            </Text>
+                        </ListItem>
+                    </List>
+                </div>
+                    
             </AccordionBody>
         </Accordion>
 
