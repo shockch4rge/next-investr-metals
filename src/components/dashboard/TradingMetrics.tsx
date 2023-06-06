@@ -1,74 +1,65 @@
 "use client";
 
+import type { MetalPriceChangeRate } from "@/apis/metals";
+import { MetalPriceChangeRateResponseSchema } from "@/apis/metals";
 import type { CurrencyType, MetalType, TradingTimeframe } from "@/contexts/TradingPreferences";
 import { useTradingPreferences } from "@/contexts/TradingPreferences";
-import { calculateTimeframe, matchCurrencyType } from "@/util/currencies";
+import { ApiRoutes } from "@/util/ApiRoutes";
+import { calculateTimeframe, convertCurrency, formatCurrency } from "@/util/currencies";
 import { CurrencyDollarIcon, PresentationChartLineIcon } from "@heroicons/react/outline";
 import { Badge, BadgeDelta, Card, Flex, Icon, Metric, Subtitle, Text } from "@tremor/react";
 import { useEffect, useState } from "react";
 
-export const lol ={ 
-    "success": true, 
-    "base":"XAU", 
-    "start_date":"2021-04-22", 
-    "end_date":"2021-04-23", 
-    "rates":{ 
-        "USD":{ 
-            "start_rate": 1783.23371272, 
-            "end_rate": 1776.82044877, 
-            "change": -6.41326395, 
-            "change_pct": -0.3596 
-        } 
-    } 
-};
-
 async function getPriceChanges({ metal, timeframe }: { metal: MetalType; timeframe: TradingTimeframe }) {
-    const [startDate, endDate] = calculateTimeframe(timeframe);
-    const url = `https://api.metalpriceapi.com/v1/change?start_date=${startDate}&end_date=${endDate}&base=${metal}&currencies=USD`;
-    const res = await fetch(url, {
-        headers: {
-            "X-API-KEY": process.env.NEXT_PUBLIC_METALPRICE_API_KEY!,
-            "Content-Type": "application/json",
-        },
-    });
-
+    const res = await fetch(`${ApiRoutes.Base}/dashboard/trade/changes?timeframe=${timeframe}&metal=${metal}`);
     const data = await res.json();
-    return data;
+    return MetalPriceChangeRateResponseSchema.parseAsync(data);
 }
 
 export const ChangePercentageMetricCard = () => {
-    const [priceMetrics, setPriceMetrics] = useState<any>(undefined);
+    const [localePrices, setLocalePrices] = useState<MetalPriceChangeRate>({
+        start_rate: 0,
+        change: 0,
+        change_pct: 0,
+        end_rate: 0
+    });
     const { currency, metalType, timeframe } = useTradingPreferences();
 
     useEffect(() => {
         (async () => {
-            // TODO: use currency exchange api too
-            const priceChanges = await getPriceChanges({ metal: metalType, timeframe });
-            console.log(priceChanges);
+            const { rates: { USD: priceChanges } } = await getPriceChanges({ metal: metalType, timeframe });
+            const [startRate, endRate] = await convertCurrency({ 
+                to: currency,
+                rates: [priceChanges!.start_rate, priceChanges!.end_rate] 
+            });
 
-            setPriceMetrics(priceChanges.rates.USD);
+            setLocalePrices({
+                ...priceChanges!,
+                start_rate: startRate,
+                end_rate: endRate
+            });
         })();
     }, [currency, metalType, timeframe]);
 
-    return <Card className="relative" decoration="left" decorationColor="emerald">
+    return <Card decoration="left" decorationColor="emerald">
         <Flex
             justifyContent="evenly"
             alignItems="center"
             className="truncate space-x-4"
         >
             <Icon color="emerald" variant="light" size="xl" icon={PresentationChartLineIcon}/>
-            {priceMetrics && 
-                <div>
-                    <Flex alignItems="center">
-                        <Text>Profit</Text>
-                        <BadgeDelta deltaType={priceMetrics.change_pct < 0 ? "moderateDecrease" : "increase"}>{Math.abs(priceMetrics.change_pct)}%</BadgeDelta>
-                    </Flex>
-                    <Flex className="space-x-4 items-baseline">
-                        <Metric>{matchCurrencyType(priceMetrics.end_rate.toFixed(2), currency)}</Metric>
-                        <Text className="truncate">from {matchCurrencyType(priceMetrics.start_rate.toFixed(2), currency)}</Text>
-                    </Flex>
-                </div>
-            }
+            <div className={localePrices.end_rate > 0 ? "" : "w-48"}>
+                <Flex alignItems="center">
+                    <Text>Profit</Text>
+                    <BadgeDelta deltaType={localePrices.change_pct < 0 ? "moderateDecrease" : "moderateIncrease"}>
+                        {Math.abs(localePrices.change_pct).toFixed(2)}%
+                    </BadgeDelta>
+                </Flex>
+                <Flex className="space-x-4 items-baseline">
+                    <Metric>{formatCurrency(localePrices.end_rate, currency)}</Metric>
+                    <Text className="truncate">from {formatCurrency(localePrices.start_rate, currency)}</Text>
+                </Flex>
+            </div>
 
         </Flex>
     </Card>;
