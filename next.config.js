@@ -12,7 +12,15 @@ const nextConfig = {
                 hostname: "**",
             }
         ]
-    }
+    },
+
+    redirects: async () => [
+        {
+            source: "/",
+            destination: "/dashboard",
+            permanent: true,
+        },
+    ],
 }
 
 module.exports = nextConfig
