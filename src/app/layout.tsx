@@ -1,4 +1,5 @@
 import "./globals.css";
+import "react-toastify/dist/ReactToastify.css";
 import { Inter } from "next/font/google";
 import { z } from "zod";
 import { OAuthSessionProvider } from "@/components/OAuthSessionProvider";
@@ -15,15 +16,6 @@ export const metadata = {
     title: "Investr • Metals",
     description: "A trading website for precious metals",
 };
-
-export const envSchema = z.object({
-    FIDOR_CLIENT_ID: z.string(),
-    FIDOR_CLIENT_SECRET: z.string(),
-    FIDOR_CALLBACK_URL: z.string(),
-    NEWSAPI_API_KEY: z.string(),
-});
-
-envSchema.parse(process.env);
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
