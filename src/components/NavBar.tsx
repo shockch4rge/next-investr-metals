@@ -33,19 +33,20 @@ export const NavBar: React.FC = () => {
                     <div className="flex items-center space-x-6">
                         <NavLink href={AppRoutes.Dashboard()}>Dashboard</NavLink>
                         <NavLink href={AppRoutes.News()}>News</NavLink>
+                        {session && <NavLink href={AppRoutes.Admin()}>Admin</NavLink>}
                     </div>
                 </div>
                 <div className="flex items-center space-x-4">
                     <MetalCategorySelect />
                     {session 
                         ? <Button icon={UserCircleIcon} onClick={() => router.push(AppRoutes.Profile())}>
-                            Profile
+                            {session.user.email}
                         </Button>
                         : <Button icon={UserCircleIcon} onClick={() => signIn()}>
                             Login
                         </Button>
                     }
-                    {session && <Button onClick={() => signOut()}>Log Out</Button>}
+                    {session && <Button onClick={() => signOut()}>Sign Out</Button>}
                 </div>
             </div>
         </Container>
