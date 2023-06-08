@@ -4,6 +4,10 @@ import type { OAuthConfig, Provider } from "next-auth/providers";
 import { nanoid } from "nanoid";
 import { DateTime } from "luxon";
 import type { JWT } from "next-auth/jwt";
+import { db } from "@/db/firebase";
+import { ApiRoutes } from "@/util/ApiRoutes";
+import { buildHeaders } from "@/util/buildHeaders";
+import { setDoc, doc } from "firebase/firestore";
 
 export const FidorUrls = {
     Base: "https://api.tp.sandbox.fidorfzco.com",
@@ -162,6 +166,10 @@ export const authOptions: NextAuthOptions = {
                 id: token.userId,
                 email: token.userEmail,
             };
+
+            await setDoc(doc(db, "users", token.userId!), {
+                email: token.userEmail!,
+            });
 
             return session;
         },
